@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">KnightWatch</string>
+    <string name="match_number">Match #</string>
+    <string name="button_send">Send</string>
+    <string name="blue_alliance">Scout Blue</string>
+    <string name="red_alliance">Scout Red</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_match_scouting">Match Scouting</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="match_scouting_activity_title">Match Scouting</string>
+    <string name="title_activity_auto_scouting">AutoScouting</string>
+    <string name="title_activity_auto_scouting2">AutoScouting2</string>
+    <string name="title_activity_teleop_scouting">Teleop Scouting</string>
+    <string name="title_activity_file_chooser">FileChooser</string>
+    <string name="title_activity_team_stats_page">TeamStatsPage</string>
+    <string name="title_activity_team_cycles_report">TeamCyclesReport</string>
+    <string name="default_knightWatchData_location">/sdcard/KnightWatchData.csv</string>
+
+
+
+    <string name="EXTRA_TEAM_NO">com.loyola.robotics.knightwatch.EXTRA_TEAM_NO</string>
+    <string name="EXTRA_MATCHES_HASHTABLE">com.loyola.robotics.knightwatch.EXTRA_MATCHES_HASHTABLE</string>
+    <string name="EXTRA_MatchesPlayedByTeam_HASHTABLE">com.loyola.robotics.knightwatch.EXTRA_MatchesPlayedByTeam_HASHTABLE</string>
+    <string name="EXTRA_MATCH_SCORES_HASHTABLE">com.loyola.robotics.knightwatch.EXTRA_MATCH_SCORES_HASHTABLE</string>
+    <string name="EXTRA_TEAM_CYCLE_COUNTS">com.loyola.robotics.knightwatch.EXTRA_TEAM_CYCLE_COUNTS</string>
+    <string name="EXTRA_PTS_PER_S">com.loyola.robotics.knightwatch.EXTRA_PTS_PER_S</string>
+    <string name="EXTRA_TIMES">com.loyola.robotics.knightwatch.EXTRA_TIMES</string>
+    <string name="EXTRA_WINS">com.loyola.robotics.knightwatch.EXTRA_WINS</string>
+    <string name="EXTRA_LOSSES">com.loyola.robotics.knightwatch.EXTRA_LOSSES</string>
+    <string name="EXTRA_TIES">com.loyola.robotics.knightwatch.EXTRA_TIES</string>
+    <string name="EXTRA_MATCH_RESULTS_FILE">com.loyola.robotics.knightwatch.EXTRA_MATCH_RESULTS_FILE</string>
+    <string name="EXTRA_KNIGHT_WATCH_DATA_FILE">om.loyola.robotics.knightwatch.EXTRA_KNIGHT_WATCH_DATA_FILE</string>
+
+</resources>

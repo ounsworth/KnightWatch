@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red_alliance">#ffff595d</color>
+    <color name="blue_alliance">#ff668bea</color>
+    <color name="neutral_alliance">#ffeae639</color>
+</resources>
