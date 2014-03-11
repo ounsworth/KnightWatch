@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,15 @@ public class TeleopScouting extends ActionBarActivity {
     private long startTime = 0;
 
     private Intent srcIntent;
+
+    private int numAssis = 1;
+
+    private int state;
+    private int prevState;
+    private RobotEvent lastAdded;
+//    private boolean twoAdded = false;
+//    private RobotEvent secondLastAdded;
+
 
     private Vector<RobotEvent> events = new Vector<RobotEvent>();
 
@@ -100,16 +110,17 @@ public class TeleopScouting extends ActionBarActivity {
 
 
     public void setState(int state) {
+        this.state = state;
         switch (state) {
             case AUTO_MODE:
+                ((Button) findViewById(R.id.undoBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.allAutoBallsBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.pickupBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.passbtn)).setEnabled(false);
                 ((Button) findViewById(R.id.droppedBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.trussBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchSameBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchNewBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchFailedBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.catchBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.trussControlledBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.trussChaoticBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.LGScoreBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.LGFailedBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.HGScoreBtn)).setEnabled(false);
@@ -118,14 +129,19 @@ public class TeleopScouting extends ActionBarActivity {
             case NEW_CYCLE:
                 ballIsLoose = true;
                 trussCompleted = false;
+                this.numAssis = 1;
+                ((RadioButton) findViewById(R.id.RBtn1Assis)).setChecked(true);
+                ((RadioButton) findViewById(R.id.RBtn2Assis)).setChecked(false);
+                ((RadioButton) findViewById(R.id.RBtn3Assis)).setChecked(false);
+
+                ((Button) findViewById(R.id.undoBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.allAutoBallsBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.pickupBtn)).setEnabled(true);
-                ((Button) findViewById(R.id.passbtn)).setEnabled(false);
                 ((Button) findViewById(R.id.droppedBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.trussBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchSameBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchNewBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchFailedBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.catchBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.trussControlledBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.trussChaoticBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.LGScoreBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.LGFailedBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.HGScoreBtn)).setEnabled(false);
@@ -133,14 +149,14 @@ public class TeleopScouting extends ActionBarActivity {
                 break;
             case LOOSE:
                 ballIsLoose = true;
+                ((Button) findViewById(R.id.undoBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.allAutoBallsBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.pickupBtn)).setEnabled(true);
-                ((Button) findViewById(R.id.passbtn)).setEnabled(false);
                 ((Button) findViewById(R.id.droppedBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.trussBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchSameBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchNewBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchFailedBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.catchBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.trussControlledBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.trussChaoticBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.LGScoreBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.LGFailedBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.HGScoreBtn)).setEnabled(false);
@@ -148,32 +164,33 @@ public class TeleopScouting extends ActionBarActivity {
                 break;
             case POSSESSED:
                 ballIsLoose = false;
+                ((Button) findViewById(R.id.undoBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.allAutoBallsBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.pickupBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.passbtn)).setEnabled(true);
                 ((Button) findViewById(R.id.droppedBtn)).setEnabled(true);
                 if (! trussCompleted ) {
                     ((Button) findViewById(R.id.trussBtn)).setEnabled(true);
                 }
-                ((Button) findViewById(R.id.catchSameBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchNewBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchFailedBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.catchBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.trussControlledBtn)).setEnabled(false);
+                ((Button) findViewById(R.id.trussChaoticBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.LGScoreBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.LGFailedBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.HGScoreBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.HGFailedBtn)).setEnabled(true);
+
                 break;
             case TRUSS_SHOT:
                 ballIsLoose = true;
                 trussCompleted = true;
+                ((Button) findViewById(R.id.undoBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.allAutoBallsBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.pickupBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.passbtn)).setEnabled(false);
-                ((Button) findViewById(R.id.droppedBtn)).setEnabled(true);
+                ((Button) findViewById(R.id.droppedBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.trussBtn)).setEnabled(false);
-                ((Button) findViewById(R.id.catchSameBtn)).setEnabled(true);
-                ((Button) findViewById(R.id.catchNewBtn)).setEnabled(true);
-                ((Button) findViewById(R.id.catchFailedBtn)).setEnabled(true);
+                ((Button) findViewById(R.id.catchBtn)).setEnabled(true);
+                ((Button) findViewById(R.id.trussControlledBtn)).setEnabled(true);
+                ((Button) findViewById(R.id.trussChaoticBtn)).setEnabled(true);
                 ((Button) findViewById(R.id.LGScoreBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.LGFailedBtn)).setEnabled(false);
                 ((Button) findViewById(R.id.HGScoreBtn)).setEnabled(false);
@@ -217,74 +234,149 @@ public class TeleopScouting extends ActionBarActivity {
     }
 
     public void autoBallsCleared(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_AUTO_BALLS_CLEARED, System.currentTimeMillis() - startTime));
+        this.lastAdded = new RobotEvent(RobotEvent.STR_AUTO_BALLS_CLEARED, System.currentTimeMillis() - startTime);
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: Auto Balls Cleared");
+        events.add(this.lastAdded );
+//        this.twoAdded = false;
 
+        prevState = AUTO_MODE;
         setState(NEW_CYCLE);
     }
 
     public void pickup(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_PICKUP, System.currentTimeMillis() - startTime));
+        this.lastAdded = new RobotEvent(RobotEvent.STR_PICKUP, System.currentTimeMillis() - startTime);
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: Pickup");
+        events.add(this.lastAdded);
+//        this.twoAdded = false;
 
+        prevState = state;
         setState(POSSESSED);
     }
 
-    public void pass(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_PASS, System.currentTimeMillis() - startTime));
-        setState(LOOSE);
-    }
-
     public void dropped(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_DROPPED, System.currentTimeMillis() - startTime));
+        this.lastAdded = new RobotEvent(RobotEvent.STR_DROPPED, System.currentTimeMillis() - startTime);
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: Dropped");
+        events.add(this.lastAdded);
+//        this.twoAdded = false;
 
+        prevState = state;
         setState(LOOSE);
     }
 
     public void truss(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_TRUSS_THROW, System.currentTimeMillis() - startTime));
+        this.lastAdded = new RobotEvent(RobotEvent.STR_TRUSS_THROW, System.currentTimeMillis() - startTime);
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: Truss");
+        events.add(this.lastAdded);
+//        this.twoAdded = false;
 
+        prevState = state;
         setState(TRUSS_SHOT);
     }
 
-    public void catch_same(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_CATCH_BY_SAME_BOT, System.currentTimeMillis() - startTime));
+    public void truss_controlled(View view) {
+        this.lastAdded = new RobotEvent(RobotEvent.STR_TRUSS_CONTROLLED, System.currentTimeMillis() - startTime);
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: Truss Controlled");
+        events.add(this.lastAdded);
+//        this.twoAdded = false;
 
+        prevState = state;
         setState(POSSESSED);
     }
 
-    public void catch_new(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_CATCH_BY_NEW_BOT, System.currentTimeMillis() - startTime));
+    public void truss_uncontrolled(View view) {
+        this.lastAdded = new RobotEvent(RobotEvent.STR_TRUSS_UNCONTROLLED, System.currentTimeMillis() - startTime);
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: Truss Uncontrolled");
+        events.add(this.lastAdded);
+//        this.twoAdded = false;
 
-        setState(POSSESSED);
-    }
-
-    public void catch_failed(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_CATCH_FAILED, System.currentTimeMillis() - startTime));
-
+        prevState = state;
         setState(LOOSE);
     }
 
-    public void LG_score(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_LG_SCORE, System.currentTimeMillis() - startTime));
+    public void truss_catch(View view) {
+        this.lastAdded = new RobotEvent(RobotEvent.STR_TRUSS_CATCH, System.currentTimeMillis() - startTime);
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: Truss Catch");
+        events.add(this.lastAdded);
+//        this.twoAdded = false;
 
+        prevState = state;
+        setState(POSSESSED);
+    }
+
+    public void LG_score(View view) {
+        this.lastAdded = new RobotEvent(RobotEvent.STR_LG_SCORE, System.currentTimeMillis() - startTime);
+        lastAdded.numAssis = this.numAssis;
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: Low Goal Score");
+        events.add(this.lastAdded);
+//        this.twoAdded = true;
+//        this.secondLastAdded = new RobotEvent(RobotEvent.STR_NUM_ASSIS, numAssis);
+//        events.add( this.secondLastAdded );
+
+        prevState = state;
         setState(NEW_CYCLE);
     }
 
     public void LG_missed(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_LG_MISS, System.currentTimeMillis() - startTime));
+        this.lastAdded = new RobotEvent(RobotEvent.STR_LG_MISS, System.currentTimeMillis() - startTime);
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: Low Goal Missed");
+        events.add(this.lastAdded);
+//        this.twoAdded = false;
 
+        prevState = state;
         setState(LOOSE);
     }
 
     public void HG_score(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_HG_SCORE, System.currentTimeMillis() - startTime));
+        this.lastAdded = new RobotEvent(RobotEvent.STR_HG_SCORE, System.currentTimeMillis() - startTime);
+        lastAdded.numAssis = this.numAssis;
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: High Goal Score");
+        events.add(this.lastAdded);
+//        this.twoAdded = true;
 
+        prevState = state;
         setState(NEW_CYCLE);
     }
 
     public void HG_missed(View view) {
-        events.add( new RobotEvent(RobotEvent.STR_HG_MISS, System.currentTimeMillis() - startTime));
+        this.lastAdded = new RobotEvent(RobotEvent.STR_HG_MISS, System.currentTimeMillis() - startTime);
+        ((TextView) findViewById(R.id.undoTV)).setText("You Clicked: High Goal Missed");
+        events.add( this.lastAdded );
+//        this.twoAdded = false;
 
+        prevState = state;
         setState(LOOSE);
+    }
+
+    public void undo(View view) {
+        this.state = this.prevState;
+        setState( this.state );
+        ((TextView) findViewById(R.id.undoTV)).setText("");
+
+        events.remove( this.lastAdded );
+
+//        if( this.twoAdded )
+//            events.remove( secondLastAdded );
+    }
+
+    public void oneAssis(View view) {
+        ((RadioButton) findViewById(R.id.RBtn2Assis)).setChecked(false);
+        ((RadioButton) findViewById(R.id.RBtn3Assis)).setChecked(false);
+
+        this.numAssis = 1;
+    }
+
+    public void twoAssis(View view) {
+        ((RadioButton) findViewById(R.id.RBtn1Assis)).setChecked(false);
+        ((RadioButton) findViewById(R.id.RBtn3Assis)).setChecked(false);
+
+        this.numAssis = 2;
+    }
+
+    public void threeAssis(View view) {
+        ((RadioButton) findViewById(R.id.RBtn1Assis)).setChecked(false);
+        ((RadioButton) findViewById(R.id.RBtn2Assis)).setChecked(false);
+
+        this.numAssis = 3;
     }
 
     public void saveFile(View view) {

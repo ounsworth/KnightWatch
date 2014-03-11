@@ -1,10 +1,5 @@
 package com.loyola.robotics.knightwatch;
 
-import android.view.animation.RotateAnimation;
-import android.widget.Toast;
-
-import com.loyola.robotics.knightwatch.RobotEvent;
-
 import java.util.Vector;
 
 /**
@@ -33,32 +28,32 @@ public class CycleAnalyzer {
 
     public static String lookupName(int type) {
         switch(type) {
-            case CYCLE_LG_0Pass: return "[0 Pass] L.G.";
-            case CYCLE_LG_1Pass: return "[1 Pass] L.G.";
-            case CYCLE_LG_2Pass: return "[2 Pass] L.G.";
-            case CYCLE_LG_TRUSS_0Pass: return "[0 Pass] L.G. + Truss";
-            case CYCLE_LG_TRUSS_1Pass: return "[1 Pass] L.G. + Truss";
-            case CYCLE_LG_TRUSS_2Pass: return "[2 Pass] L.G. + Truss";
-            case CYCLE_LG_TRUSS_CATCH_0Pass: return "[0 Pass] L.G. + Truss + Catch";
-            case CYCLE_LG_TRUSS_CATCH_1Pass: return "[1 Pass] L.G. + Truss + Catch";
-            case CYCLE_LG_TRUSS_CATCH_2Pass: return "[2 Pass] L.G. + Truss + Catch";
-            case CYCLE_HG_0Pass: return "[0 Pass] H.G.";
-            case CYCLE_HG_1Pass: return "[1 Pass] H.G.";
-            case CYCLE_HG_2Pass: return "[2 Pass] H.G.";
-            case CYCLE_HG_TRUSS_0Pass: return "[0 Pass] H.G. + Truss";
-            case CYCLE_HG_TRUSS_1Pass: return "[1 Pass] H.G. + Truss";
-            case CYCLE_HG_TRUSS_2Pass: return "[2 Pass] H.G. + Truss";
-            case CYCLE_HG_TRUSS_CATCH_0Pass: return "[0 Pass] H.G. + Truss + Catch";
-            case CYCLE_HG_TRUSS_CATCH_1Pass: return "[1 Pass] H.G. + Truss + Catch";
-            case CYCLE_HG_TRUSS_CATCH_2Pass: return "[2 Pass] H.G. + Truss + Catch";
+            case CYCLE_LG_0Pass: return "[1 Assis] L.G.";
+            case CYCLE_LG_1Pass: return "[2 Assis] L.G.";
+            case CYCLE_LG_2Pass: return "[3 Assis] L.G.";
+            case CYCLE_LG_TRUSS_0Pass: return "[1 Assis] L.G. + Truss";
+            case CYCLE_LG_TRUSS_1Pass: return "[2 Assis] L.G. + Truss";
+            case CYCLE_LG_TRUSS_2Pass: return "[3 Assis] L.G. + Truss";
+            case CYCLE_LG_TRUSS_CATCH_0Pass: return "[1 Assis] L.G. + Truss + Catch";
+            case CYCLE_LG_TRUSS_CATCH_1Pass: return "[2 Assis] L.G. + Truss + Catch";
+            case CYCLE_LG_TRUSS_CATCH_2Pass: return "[3 Assis] L.G. + Truss + Catch";
+            case CYCLE_HG_0Pass: return "[1 Assis] H.G.";
+            case CYCLE_HG_1Pass: return "[2 Assis] H.G.";
+            case CYCLE_HG_2Pass: return "[3 Assis] H.G.";
+            case CYCLE_HG_TRUSS_0Pass: return "[1 Assis] H.G. + Truss";
+            case CYCLE_HG_TRUSS_1Pass: return "[2 Assis] H.G. + Truss";
+            case CYCLE_HG_TRUSS_2Pass: return "[3 Assis] H.G. + Truss";
+            case CYCLE_HG_TRUSS_CATCH_0Pass: return "[1 Assis] H.G. + Truss + Catch";
+            case CYCLE_HG_TRUSS_CATCH_1Pass: return "[2 Assis] H.G. + Truss + Catch";
+            case CYCLE_HG_TRUSS_CATCH_2Pass: return "[3 Assis] H.G. + Truss + Catch";
         }
         return "error";
     }
 
 
-    private final static int ZERO_PASS = 0;
-    private final static int ONE_PASS = 1;
-    private final static int TWO_PASS = 2;
+    private final static int ONE_ASSIS = 0;
+    private final static int TWO_ASSIS = 1;
+    private final static int THREE_ASSIS = 2;
 
     private final static int VOID_STATE = -1;
     private final static int CYCLE_STARTED = 0;
@@ -93,7 +88,7 @@ public class CycleAnalyzer {
         public int cycleTypeState;
 
         public State() {
-            passState = ZERO_PASS;
+            passState = ONE_ASSIS;
             cycleTypeState = VOID_STATE;
         }
     }
@@ -123,7 +118,7 @@ public class CycleAnalyzer {
             }
 
             // pass it to the state function
-            state = stateMachine(state, event.eventType);
+            state = stateMachine(state, event);
 
             // deal with accepting states
             long cycleTime;
@@ -132,13 +127,13 @@ public class CycleAnalyzer {
                     cycleTime = event.getTime() - cycleStartTime;
                     cycleStartTime = event.getTime();
                     switch(state.passState) {
-                        case ZERO_PASS:
+                        case ONE_ASSIS:
                             cycles.add(new Cycle(CYCLE_LG_0Pass, cycleTime));
                             break;
-                        case ONE_PASS:
+                        case TWO_ASSIS:
                             cycles.add(new Cycle(CYCLE_LG_1Pass, cycleTime));
                             break;
-                        case TWO_PASS:
+                        case THREE_ASSIS:
                             cycles.add(new Cycle(CYCLE_LG_2Pass, cycleTime));
                             break;
 
@@ -147,13 +142,13 @@ public class CycleAnalyzer {
                 case HG:
                     cycleTime = event.getTime() - cycleStartTime;
                     switch(state.passState) {
-                        case ZERO_PASS:
+                        case ONE_ASSIS:
                             cycles.add(new Cycle(CYCLE_HG_0Pass, cycleTime));
                             break;
-                        case ONE_PASS:
+                        case TWO_ASSIS:
                             cycles.add(new Cycle(CYCLE_HG_1Pass, cycleTime));
                             break;
-                        case TWO_PASS:
+                        case THREE_ASSIS:
                             cycles.add(new Cycle(CYCLE_HG_2Pass, cycleTime));
                             break;
 
@@ -162,13 +157,13 @@ public class CycleAnalyzer {
                 case TRUSS_LG:
                     cycleTime = event.getTime() - cycleStartTime;
                     switch(state.passState) {
-                        case ZERO_PASS:
+                        case ONE_ASSIS:
                             cycles.add(new Cycle(CYCLE_LG_TRUSS_0Pass, cycleTime));
                             break;
-                        case ONE_PASS:
+                        case TWO_ASSIS:
                             cycles.add(new Cycle(CYCLE_LG_TRUSS_1Pass, cycleTime));
                             break;
-                        case TWO_PASS:
+                        case THREE_ASSIS:
                             cycles.add(new Cycle(CYCLE_LG_TRUSS_2Pass, cycleTime));
                             break;
 
@@ -177,13 +172,13 @@ public class CycleAnalyzer {
                 case TRUSS_HG:
                     cycleTime = event.getTime() - cycleStartTime;
                     switch(state.passState) {
-                        case ZERO_PASS:
+                        case ONE_ASSIS:
                             cycles.add(new Cycle(CYCLE_HG_TRUSS_0Pass, cycleTime));
                             break;
-                        case ONE_PASS:
+                        case TWO_ASSIS:
                             cycles.add(new Cycle(CYCLE_HG_TRUSS_1Pass, cycleTime));
                             break;
-                        case TWO_PASS:
+                        case THREE_ASSIS:
                             cycles.add(new Cycle(CYCLE_HG_TRUSS_2Pass, cycleTime));
                             break;
 
@@ -192,13 +187,13 @@ public class CycleAnalyzer {
                 case TRUSS_CATCH_LG:
                     cycleTime = event.getTime() - cycleStartTime;
                     switch(state.passState) {
-                        case ZERO_PASS:
+                        case ONE_ASSIS:
                             cycles.add(new Cycle(CYCLE_LG_TRUSS_CATCH_0Pass, cycleTime));
                             break;
-                        case ONE_PASS:
+                        case TWO_ASSIS:
                             cycles.add(new Cycle(CYCLE_LG_TRUSS_CATCH_1Pass, cycleTime));
                             break;
-                        case TWO_PASS:
+                        case THREE_ASSIS:
                             cycles.add(new Cycle(CYCLE_LG_TRUSS_CATCH_2Pass, cycleTime));
                             break;
 
@@ -207,13 +202,13 @@ public class CycleAnalyzer {
                 case TRUSS_CATCH_HG:
                     cycleTime = event.getTime() - cycleStartTime;
                     switch(state.passState) {
-                        case ZERO_PASS:
+                        case ONE_ASSIS:
                             cycles.add(new Cycle(CYCLE_HG_TRUSS_CATCH_0Pass, cycleTime));
                             break;
-                        case ONE_PASS:
+                        case TWO_ASSIS:
                             cycles.add(new Cycle(CYCLE_HG_TRUSS_CATCH_1Pass, cycleTime));
                             break;
-                        case TWO_PASS:
+                        case THREE_ASSIS:
                             cycles.add(new Cycle(CYCLE_HG_TRUSS_CATCH_2Pass, cycleTime));
                             break;
 
@@ -226,18 +221,28 @@ public class CycleAnalyzer {
     }
 
 
-    private static State stateMachine( State state, String symbol ) {
+    private static State stateMachine( State state, RobotEvent event ) {
+        String symbol = event.eventType;
+
         // pass state
-        switch(state.passState) {
-            case ZERO_PASS:
-                if (symbol.equals(RobotEvent.STR_PASS))
-                    state.passState = ONE_PASS;
-                break;
-            case ONE_PASS:
-                if (symbol.equals(RobotEvent.STR_PASS))
-                    state.passState = TWO_PASS;
-                break;
+        if( symbol.equals(RobotEvent.STR_LG_SCORE) || symbol.equals(RobotEvent.STR_HG_SCORE) ) {
+            if( event.numAssis == 1 )
+                state.passState = ONE_ASSIS;
+            if( event.numAssis == 2 )
+                state.passState = TWO_ASSIS;
+            if( event.numAssis == 3 )
+                state.passState = THREE_ASSIS;
         }
+//        switch(state.passState) {
+//            case ONE_ASSIS:
+//                if (symbol.equals(RobotEvent.STR_PASS))
+//                    state.passState = TWO_ASSIS;
+//                break;
+//            case TWO_ASSIS:
+//                if (symbol.equals(RobotEvent.STR_PASS))
+//                    state.passState = THREE_ASSIS;
+//                break;
+//        }
 
         // cycle type state
         switch(state.cycleTypeState) {
@@ -261,7 +266,7 @@ public class CycleAnalyzer {
                     state.cycleTypeState = TRUSS_LG;
                 else if(symbol.equals(RobotEvent.STR_HG_SCORE))
                     state.cycleTypeState = TRUSS_HG;
-                else if (symbol.equals(RobotEvent.STR_CATCH_BY_NEW_BOT))
+                else if (symbol.equals(RobotEvent.STR_TRUSS_CATCH))
                     state.cycleTypeState = TRUSS_CATCH;
                 break;
 

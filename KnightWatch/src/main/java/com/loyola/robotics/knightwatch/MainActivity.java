@@ -452,10 +452,20 @@ public class MainActivity extends ActionBarActivity {
                 // -1 cause the last one will be a comma with nothing after it
                 for(int i=2; i<cells.length-1; i++) {
                     String eventType = cells[i].substring(cells[i].indexOf('{') + 1, cells[i].indexOf(';'));
-                    int minutes = Integer.parseInt(cells[i].substring(cells[i].indexOf(";") + 1, cells[i].indexOf(":")));
-                    int seconds = Integer.parseInt(cells[i].substring(cells[i].indexOf(":") + 1, cells[i].indexOf("}")));
 
-                    events.add( new RobotEvent(eventType, minutes, seconds));
+                    if( eventType.equals( RobotEvent.STR_LG_SCORE) || eventType.equals( RobotEvent.STR_HG_SCORE) ) {
+                        int minutes = Integer.parseInt(cells[i].substring(cells[i].indexOf(";") + 1, cells[i].indexOf(":")));
+                        int seconds = Integer.parseInt(cells[i].substring(cells[i].indexOf(":") + 1, cells[i].indexOf("|") ));
+                        String strAssis = cells[i].substring(cells[i].indexOf("|") + 1, cells[i].indexOf("}"));
+                        int assists = Integer.parseInt(strAssis.replace(RobotEvent.STR_NUM_ASSIS, ""));
+                         events.add( new RobotEvent(eventType, minutes, seconds, assists));
+
+                    } else {
+                        int minutes = Integer.parseInt(cells[i].substring(cells[i].indexOf(";") + 1, cells[i].indexOf(":")));
+                        int seconds = Integer.parseInt(cells[i].substring(cells[i].indexOf(":") + 1, cells[i].indexOf("}")));
+                        events.add( new RobotEvent(eventType, minutes, seconds));
+                    }
+
                 }
 
                 matches.put(getMatchAllianceKey(matchNum, alliance), events);

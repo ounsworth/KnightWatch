@@ -57,6 +57,26 @@
             android:id="@+id/possessionLBL"
             android:layout_gravity="center_horizontal" />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:id="@+id/undoTV"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="You clicked:"/>
+
+            <Button android:id="@+id/undoBtn"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="undo"
+                android:text="Undo" />
+        </LinearLayout>
+
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -76,20 +96,7 @@
                 android:text="Pickup\n"
                 android:id="@+id/pickupBtn"
                 android:onClick="pickup"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/passbtn" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="@dimen/pass_btns_height"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Pass\n(new bot)"
-                android:id="@+id/passbtn"
-                android:onClick="pass"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentTop="true" />
 
             <Button
                 android:layout_width="0dp"
@@ -108,58 +115,82 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
+            <Button android:id="@+id/trussBtn"
                 android:layout_width="115dp"
-                android:layout_height="135dp"
+                android:layout_height="100dp"
                 android:text="Truss\nShot"
-                android:onClick="truss"
-                android:id="@+id/trussBtn" />
+                android:onClick="truss" />
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
+                <Button android:id="@+id/catchBtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="truss_catch"
+                    android:text="Catch" />
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="fill_parent">
 
-                    <Button
+                    <Button android:id="@+id/trussControlledBtn"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Catch\n(same bot)"
-                        android:id="@+id/catchSameBtn"
-                        android:onClick="catch_same"
+                        android:layout_height="fill_parent"
+                        android:text="Controlled"
+                        android:onClick="truss_controlled"
                         android:layout_weight="1"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true" />
 
-                    <Button
+                    <Button android:id="@+id/trussChaoticBtn"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:text="Catch\n(new bot)"
-                        android:id="@+id/catchNewBtn"
-                        android:onClick="catch_new"
+                        android:text="Chaotic"
+                        android:onClick="truss_uncontrolled"
                         android:layout_weight="1"
-                        android:layout_alignBottom="@+id/catchSameBtn"
+                        android:layout_alignBottom="@+id/catchControlled"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true" />
-
                 </LinearLayout>
-
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="Failed Catch"
-                    android:id="@+id/catchFailedBtn"
-                    android:onClick="catch_failed"
-                    android:layout_below="@+id/catchSameBtn"
-                    android:layout_centerHorizontal="true" />
 
             </LinearLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 Assis."
+                android:id="@+id/RBtn1Assis"
+                android:onClick="oneAssis"
+                android:checked="true" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2 Assis."
+                android:id="@+id/RBtn2Assis"
+                android:onClick="twoAssis"
+                android:checked="false" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3 Assis."
+                android:id="@+id/RBtn3Assis"
+                android:onClick="threeAssis"
+                android:checked="false" />
         </LinearLayout>
 
         <LinearLayout
