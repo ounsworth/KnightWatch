@@ -5,6 +5,8 @@ Maintaining mentor: Mike Ounsworth <ounsworth@gmail.com>
 
 ### TODO List ideas:
 
+- think up a new name for the app that's related to Merge Conflict
+- change the logo to te Merge Conflict logo
 - get the Android Back button to work
 - fix how it forgets files you've loaded
 - Include other statistics to team page:
