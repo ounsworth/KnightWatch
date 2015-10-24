@@ -18,3 +18,7 @@ Maintaining mentor: Mike Ounsworth <ounsworth@gmail.com>
 - be able to auto-fetch the match data from somewhere on the internet
 - use bluetooth to share data between devices runnig the app (so that as long as one phone in the cluster has internet, they all can get live match results / upload data)
 - upload data to a server so that the drive team has live scouting data (possible through Google Drive API?)
+- Team Photos:
+  - is there a more effective way to load them into the app? Maybe also a Google Drive API?
+  - More than one photo per team?
+  - pinch zoom
