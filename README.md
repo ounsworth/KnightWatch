@@ -24,3 +24,9 @@ Maintaining mentor: Mike Ounsworth <ounsworth@gmail.com>
   - is there a more effective way to load them into the app? Maybe also a Google Drive API?
   - More than one photo per team?
   - pinch zoom
+- Convert to material design(side bar, double tab for scout red scout blue)
+- Easier client side loading(fishing)
+- Download and process an excel file of when and who matches to automatically set up teams and game numbers?
+- After autonomous start time at 15 instead of 0 in UI but not in backround
+- Set up settings
+- Bluetooth sending groups protected by password
