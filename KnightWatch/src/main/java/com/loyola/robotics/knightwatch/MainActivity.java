@@ -3,8 +3,11 @@ package com.loyola.robotics.knightwatch;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,6 +63,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+
 
         this.loadMatchButton = (Button) findViewById(R.id.loadMatchResultsBtn);
         this.loadMatchResultsTV = (TextView) findViewById(R.id.loadMatchResultsTV);
@@ -95,14 +103,14 @@ public class MainActivity extends ActionBarActivity {
         if( globalIntent.hasExtra(getResources().getString(R.string.EXTRA_MATCH_RESULTS_FILE) ) ) {
             // force a re-load of the files always
 //            if( !matchResultsLoaded ) {
-                loadMatchResultsFile();
+            loadMatchResultsFile();
 //            }
         }
 
         // KnightWatch file
         if( globalIntent.hasExtra(getResources().getString(R.string.EXTRA_KNIGHT_WATCH_DATA_FILE)) ) {
 //            if( !knightWatchLoaded ) {
-                loadKnightWatchDataFile();
+            loadKnightWatchDataFile();
 //            }
         }
 
@@ -307,7 +315,7 @@ public class MainActivity extends ActionBarActivity {
         if( matchKey.contains("blue") )
             return matchKey.replace("blue", "red");
 
-       return null;
+        return null;
     }
 
 
@@ -458,7 +466,7 @@ public class MainActivity extends ActionBarActivity {
                         int seconds = Integer.parseInt(cells[i].substring(cells[i].indexOf(":") + 1, cells[i].indexOf("|") ));
                         String strAssis = cells[i].substring(cells[i].indexOf("|") + 1, cells[i].indexOf("}"));
                         int assists = Integer.parseInt(strAssis.replace(RobotEvent.STR_NUM_ASSIS, ""));
-                         events.add( new RobotEvent(eventType, minutes, seconds, assists));
+                        events.add( new RobotEvent(eventType, minutes, seconds, assists));
 
                     } else {
                         int minutes = Integer.parseInt(cells[i].substring(cells[i].indexOf(";") + 1, cells[i].indexOf(":")));
@@ -484,7 +492,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;

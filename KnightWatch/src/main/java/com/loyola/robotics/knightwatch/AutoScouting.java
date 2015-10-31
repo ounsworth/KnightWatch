@@ -1,10 +1,12 @@
 package com.loyola.robotics.knightwatch;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,11 +29,12 @@ public class AutoScouting extends ActionBarActivity {
         setContentView(R.layout.fragment_auto_scouting2);
 
         // Make sure we're running on Honeycomb or higher to use ActionBar APIs
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
+*/
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
 
         /** Alliance Colour Indicators **/
         Intent intent = getIntent();
@@ -39,27 +42,48 @@ public class AutoScouting extends ActionBarActivity {
         m_allianceColour = intent.getStringExtra(MainActivity.EXTRA_ALLIANCE_COLOUR);
         m_matchNum = intent.getStringExtra(MainActivity.EXTRA_MATCH_NUM);
 
-        TextView allianceBanner = (TextView) findViewById(R.id.allianceColourTV);
+        // TextView allianceBanner = (TextView) findViewById(R.id.allianceColourTV);
         Button teleopBtn = (Button) findViewById(R.id.startTeleopBtn);
 
-        if( m_allianceColour.equals( getString(R.string.red_alliance) ) ) {
-            allianceBanner.setText("Red Alliance");
-            allianceBanner.setBackgroundResource(R.color.red_alliance);
+        if (m_allianceColour.equals(getString(R.string.red_alliance))) {
+            if (toolbar != null) {
+                toolbar.setTitle("Red Alliance");
+                int redColor = Color.parseColor("#ffff595d");
+                toolbar.setBackgroundColor(redColor);
+                if (Build.VERSION.SDK_INT >= 21) {
+                    getWindow().setNavigationBarColor(getResources().getColor(R.color.red_alliance));
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.red_alliance));
+
+                }
+                setSupportActionBar(toolbar);
+
+            }
+         /*   allianceBanner.setText("Red Alliance");
+            allianceBanner.setBackgroundResource(R.color.red_alliance);*/
             teleopBtn.setBackgroundResource(R.color.red_alliance);
 
-        } else if ( m_allianceColour.equals( getString(R.string.blue_alliance) ) ) {
-            allianceBanner.setText("Blue Alliance");
-            allianceBanner.setBackgroundResource(R.color.blue_alliance);
-            teleopBtn.setBackgroundResource(R.color.blue_alliance);
-        } else {
-            allianceBanner.setText("!Error!");
+        } else if (m_allianceColour.equals(getString(R.string.blue_alliance))) {
+            if (toolbar != null) {
+                toolbar.setTitle("Blue Alliance");
+                int blueColor = Color.parseColor("#ff668bea");
+                toolbar.setBackgroundColor(blueColor);
+                if (Build.VERSION.SDK_INT >= 21) {
+                    getWindow().setNavigationBarColor(getResources().getColor(R.color.blue_alliance));
+                    getWindow().setStatusBarColor(getResources().getColor(R.color.blue_alliance));
+
+                }
+          /*  allianceBanner.setText("Blue Alliance");
+            allianceBanner.setBackgroundResource(R.color.blue_alliance);*/
+                teleopBtn.setBackgroundResource(R.color.blue_alliance);
+            } /*else {
+                allianceBanner.setText("!Error!");
+            }*/
         }
+
     }
-
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
+    public boolean onCreateOptionsMenu (Menu menu){
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.auto_scouting2, menu);
         return true;
@@ -71,11 +95,11 @@ public class AutoScouting extends ActionBarActivity {
         intent.putExtra(MainActivity.EXTRA_ALLIANCE_COLOUR, m_allianceColour);
 
         // copy the file names, if they are there
-        if(srcIntent.hasExtra(getResources().getString(R.string.EXTRA_KNIGHT_WATCH_DATA_FILE)))
+        if (srcIntent.hasExtra(getResources().getString(R.string.EXTRA_KNIGHT_WATCH_DATA_FILE)))
             intent.putExtra(getResources().getString(R.string.EXTRA_KNIGHT_WATCH_DATA_FILE),
                     srcIntent.getStringExtra(getResources().getString(R.string.EXTRA_KNIGHT_WATCH_DATA_FILE)));
 
-        if(srcIntent.hasExtra(getResources().getString(R.string.EXTRA_MATCH_RESULTS_FILE)))
+        if (srcIntent.hasExtra(getResources().getString(R.string.EXTRA_MATCH_RESULTS_FILE)))
             intent.putExtra(getResources().getString(R.string.EXTRA_MATCH_RESULTS_FILE),
                     srcIntent.getStringExtra(getResources().getString(R.string.EXTRA_MATCH_RESULTS_FILE)));
 
@@ -106,7 +130,7 @@ public class AutoScouting extends ActionBarActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_auto_scouting2, container, false);
             return rootView;
         }

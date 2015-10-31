@@ -6,7 +6,12 @@
     android:orientation="vertical"
     tools:context="com.loyola.robotics.knightwatch.MainActivity$PlaceholderFragment">
 
-
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryDark"/>
     <EditText android:id="@+id/match_num_field"
         android:layout_width="100dp"
         android:layout_height="80dp"
