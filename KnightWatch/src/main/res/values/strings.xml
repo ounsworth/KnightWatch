@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">KnightWatch</string>
+    <string name="app_name">Merge Conflict </string>
     <string name="match_number">Match #</string>
     <string name="button_send">Send</string>
     <string name="blue_alliance">Scout Blue</string>

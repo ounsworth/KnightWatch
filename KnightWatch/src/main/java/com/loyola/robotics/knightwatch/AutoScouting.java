@@ -72,6 +72,7 @@ public class AutoScouting extends ActionBarActivity {
                     getWindow().setStatusBarColor(getResources().getColor(R.color.blue_alliance));
 
                 }
+                setSupportActionBar(toolbar);
           /*  allianceBanner.setText("Blue Alliance");
             allianceBanner.setBackgroundResource(R.color.blue_alliance);*/
                 teleopBtn.setBackgroundResource(R.color.blue_alliance);
