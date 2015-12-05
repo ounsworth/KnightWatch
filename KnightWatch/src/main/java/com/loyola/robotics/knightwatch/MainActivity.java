@@ -2,20 +2,19 @@ package com.loyola.robotics.knightwatch;
 
 import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +30,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 @TargetApi(11)
@@ -43,6 +44,9 @@ public class MainActivity extends ActionBarActivity {
     public final static String EXTRA_AVE_CYCLE_TIMES = "com.loyola.robotics.knightwatch.EXTRA_AVE_CYCLE_TIMES";
     public int teamColour = Color.rgb(102, 51, 153);
     Intent globalIntent;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int MEDIA_TYPE_VIDEO = 2;
+
 
 
     static MainActivity me;
@@ -68,17 +72,27 @@ public class MainActivity extends ActionBarActivity {
     NavigationView mNavigationView;
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
-
+private Uri fileUri;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
+
+        //btn to close the application
+    //   ImageButton imgClose = (ImageButton)findViewById(R.id.imgClose);
+   //     imgClose.setOnClickListener(new View.OnClickListener() {
+   //         @Override
+   //         public void onClick(View view) {
+   //             System.exit(0);
+        //          }
+    //    });
         setNavDrawer();
         this.loadMatchButton = (Button) findViewById(R.id.loadMatchResultsBtn);
         this.loadMatchResultsTV = (TextView) findViewById(R.id.loadMatchResultsTV);
 
         if (loadMatchButton == null)
-            Toast.makeText(this, "WTF!?!?!?!?!", Toast.LENGTH_SHORT).show();
+          /*  Toast.makeText(this, "WTF!?!?!?!?!", Toast.LENGTH_SHORT).show();*/
 
         globalIntent = new Intent();
 
@@ -128,8 +142,8 @@ public class MainActivity extends ActionBarActivity {
         if (globalIntent.hasExtra(getResources().getString(R.string.EXTRA_KNIGHT_WATCH_DATA_FILE)) && knightWatchLoaded ) {
             ((Button) findViewById(R.id.loadKnightWatchDataBtn)).setText("Reload");
             File file = new File(globalIntent.getStringExtra(getResources().getString(R.string.EXTRA_KNIGHT_WATCH_DATA_FILE)));
-            ((TextView) findViewById(R.id.loadKnightWatchDataTV)).setText("Loaded '"+
-                    file.getName()+"'");
+            ((TextView) findViewById(R.id.loadKnightWatchDataTV)).setText("Loaded '" +
+                    file.getName() + "'");
 
             findViewById(R.id.bestCyclesBtn).setEnabled(true);
         }
@@ -230,7 +244,7 @@ public class MainActivity extends ActionBarActivity {
 
         Intent intent = new Intent(this, AutoScouting.class);
         intent.putExtra(EXTRA_MATCH_NUM, matchNum);
-        intent.putExtra(EXTRA_ALLIANCE_COLOUR, getString(R.string.red_alliance) );
+        intent.putExtra(EXTRA_ALLIANCE_COLOUR, getString(R.string.red_alliance));
 
         // copy the file names, if they are there
         if(globalIntent.hasExtra(getResources().getString(R.string.EXTRA_KNIGHT_WATCH_DATA_FILE)))
@@ -243,7 +257,13 @@ public class MainActivity extends ActionBarActivity {
 
         startActivity(intent);
     }
+    public void sendMessage(View view) {
+/*        Intent intent = new Intent(this, CameraActivity.class);
 
+
+        startActivity(intent);*/
+
+    }
     /** Called when the user clicks the ScoutBlue button */
     public void scoutBlue(View view) {
 
@@ -562,4 +582,54 @@ public class MainActivity extends ActionBarActivity {
 
         mDrawerToggle.syncState();
     }
+
+
+public  boolean accepted;
+    public void takePicture(View view) {
+
+   DisplayAlertDialog alert = new DisplayAlertDialog("Team Number","Team Number", 1, this);
+      alert.displayAlertDialog();
+        Timer timer = new Timer();
+        timer.schedule(new CheckVar(), 0, 500);
+
+
+
+    Log.d("heya", Boolean.toString(accepted));
 }
+
+
+
+
+public String inputResult = "empty";
+    public static String getInputResult() {
+        return DisplayAlertDialog.inputResult;
+    }
+    public void setInputResult(String inputResult) {
+        this.inputResult = inputResult;
+    }
+    public static boolean getAccepted() {
+        return DisplayAlertDialog.accepted;
+    }
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+    class CheckVar extends TimerTask {
+        public void run() {
+            setAccepted(getAccepted());
+            setInputResult(getInputResult());
+          //  Log.d("rekt", inputResult);
+            if (accepted) {
+                TakePicture pic = new TakePicture(inputResult, MainActivity.this);
+                pic.capturePicture();
+                Log.d("oof", "oof");
+                DisplayAlertDialog.accepted = false;
+
+            }
+
+        }
+    }
+
+  }
+
+
+

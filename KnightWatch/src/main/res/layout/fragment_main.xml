@@ -42,7 +42,6 @@
         android:textStyle="bold"
         android:onClick="scoutBlue"
         android:textSize="28sp" />
-
     </LinearLayout>
 
     <View
@@ -96,5 +95,7 @@
             android:text="No KnightWatch data has been loaded" />
 
     </LinearLayout>
+
+
 
 </LinearLayout>
